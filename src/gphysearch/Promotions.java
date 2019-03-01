@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Promotions {
     
-    private ArrayList<Etudiant> listeEtudiants;
+    private ArrayList<Etudiant> listeEtudiants; /* test git */
     public Promotions(){
         listeEtudiants = new ArrayList<>();
     }
