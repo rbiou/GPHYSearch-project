@@ -36,7 +36,7 @@
       </AnchorPane>
       <AnchorPane layoutX="81.0" layoutY="-1.0" prefHeight="394.0" prefWidth="520.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane fx:id="add_pane" layoutY="91.0" prefHeight="308.0" prefWidth="720.0" style="-fx-background-color: white;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="92.0">
+            <AnchorPane fx:id="add_pane" layoutY="91.0" prefHeight="308.0" prefWidth="720.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="92.0">
                <children>
                   <AnchorPane layoutX="82.0" prefHeight="200.0" prefWidth="445.0" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -52,7 +52,7 @@
                         </MenuButton>
                         <Text layoutX="118.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom" />
                         <Text layoutX="104.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prénom" />
-                        <Text layoutX="26.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Année de naissance" />
+                        <Text layoutX="40.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Année de naissance" />
                         <Text layoutX="87.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Promotion" />
                      </children>
                   </AnchorPane>
@@ -79,14 +79,14 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="home_pane" layoutY="92.0" prefHeight="308.0" prefWidth="720.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="92.0">
+            <AnchorPane fx:id="home_pane" layoutY="92.0" prefHeight="308.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="92.0">
                <children>
                   <TableView fx:id="personTable" layoutX="18.0" layoutY="25.0" prefHeight="308.0" prefWidth="720.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
                     <columns>
-                      <TableColumn fx:id="nomColonne" prefWidth="75.0" text="Nom" />
-                      <TableColumn fx:id="prenomColonne" prefWidth="75.0" text="Prénom" />
-                        <TableColumn fx:id="anneeDeNaissanceColonne" prefWidth="75.0" text="Année de naissance" />
-                        <TableColumn fx:id="promotionColonne" prefWidth="75.0" text="Promotion" />
+                      <TableColumn fx:id="nomColonne" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Nom" />
+                      <TableColumn fx:id="prenomColonne" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Prénom" />
+                        <TableColumn fx:id="anneeDeNaissanceColonne" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Année de naissance" />
+                        <TableColumn fx:id="promotionColonne" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Promotion" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -110,12 +110,12 @@
                         </MenuButton>
                         <Text layoutX="118.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom" />
                         <Text layoutX="104.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prénom" />
-                        <Text layoutX="26.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Année de naissance" />
+                        <Text layoutX="40.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Année de naissance" />
                         <Text layoutX="87.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Promotion" />
                      </children>
                   </AnchorPane>
-                  <Button fx:id="editButton" layoutX="512.0" layoutY="238.0" mnemonicParsing="false" onAction="#editStudent" text="Edit" />
-                  <Label fx:id="error2" alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="18.0" prefWidth="361.0" text="Veuillez remplir tous les champs SVP" textFill="#ff2626" visible="false" />
+                  <Button fx:id="editButton" layoutX="512.0" layoutY="238.0" mnemonicParsing="false" onAction="#editStudent" text="Editer" />
+                  <Label fx:id="error2" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="129.0" layoutY="242.0" prefHeight="18.0" prefWidth="361.0" text="Veuillez remplir tous les champs SVP" textFill="#ff2626" visible="false" />
                </children>
             </AnchorPane>
          </children>

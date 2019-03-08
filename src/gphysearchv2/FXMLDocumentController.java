@@ -28,8 +28,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 /**
- *
- * @author Remi
+ * Controller de notre application GPhySearch
+ * @author Groupe IHM2.1 : Rémi BIOU, Hatim ER-RBIBI, Marvin GODARD
  */
 public class FXMLDocumentController implements Initializable {
     
@@ -51,7 +51,12 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<Etudiant, String> prenomColonne, nomColonne, anneeDeNaissanceColonne, promotionColonne;
     @FXML
     private TableColumn<Etudiant, Void> editerColonne;
-
+    
+    /**
+     * Méthode qui permet de sélectionner la promotion parmis des choix (L3, M1 et M2) 
+     * Le choix sélectionner sera celui affiché dans le champ "Promotion"
+     * @param event
+     */
     @FXML
     private void setSelectedPromotion(ActionEvent event) {
         if (add_pane.isVisible()) {
@@ -60,7 +65,11 @@ public class FXMLDocumentController implements Initializable {
             edit_promotion_field.setText(((MenuItem) event.getTarget()).getText()); 
         }
     }
-
+    
+    /**
+     * Méthode permettant de gérer l'affichage du panel "Ajout"
+     * @param event
+     */
     @FXML
     private void setAddPanel(MouseEvent event) {
         title_label.setText("Ajouter un étudiant");
@@ -68,8 +77,14 @@ public class FXMLDocumentController implements Initializable {
         add_pane.setVisible(true);
         home_pane.setVisible(false);
         edit_pane.setVisible(false);
+        error1.setVisible(false);
+        error2.setVisible(false);
     }
-
+    
+    /**
+     * Méthode permettant de gérer l'affichage du panel "Accueil"
+     * @param event 
+     */
     @FXML
     private void setHomePanel(MouseEvent event) {
         title_label.setText("Accueil");
@@ -77,68 +92,102 @@ public class FXMLDocumentController implements Initializable {
         add_pane.setVisible(false);
         home_pane.setVisible(true);
         edit_pane.setVisible(false);
+        error1.setVisible(false);
+        error2.setVisible(false);
     }
-
+    
+    /**
+     * Méthode permettant d'ajouter un étudiant en renseignant son nom, son prénom, son année de naissance et sa promotion
+     * Tous les champs doivent être remplis pour pourvoir ajouter un étudiant
+     * Le nom et le prénom ne peuvent pas contenir de numéro
+     * La date de naissance ne peut pas contenir de lettres et doit contenir 4 chiffres
+     * @param event 
+     */
     @FXML
     private void addStudent(ActionEvent event) {
         Etudiant newStudent = new Etudiant(surname_field.getText(), name_field.getText(), promotion_field.getText(), year_field.getText());
         if ((name_field.getText().isEmpty() == false) && (surname_field.getText().isEmpty() == false) && (promotion_field.getText().isEmpty() == false) && (year_field.getText().isEmpty() == false)) {
-            //Set home panel back            
-            title_label.setText("Accueil");
-            title_icon.setImage(new Image(getClass().getResource("baseline_home_white_48dp.png").toExternalForm()));
-            add_pane.setVisible(false);
-            home_pane.setVisible(true);
-            //If any empty field
-            error1.setVisible(false);
-            //Add the new student to the student lists 
-            personTable.getItems().add(newStudent);
-            name_field.clear();
-            surname_field.clear();
-            year_field.clear();
+            if ((name_field.getText().matches(".*\\d+.*") == false) && (name_field.getText().matches("[a-zA-Z]+")) && (surname_field.getText().matches(".*\\d+.*") == false) && (surname_field.getText().matches("[a-zA-Z]+")) && ((year_field.getText().matches("[0-9]+")) && (year_field.getText().length() == 4))) {
+                //Set home panel back            
+                title_label.setText("Accueil");
+                title_icon.setImage(new Image(getClass().getResource("baseline_home_white_48dp.png").toExternalForm()));
+                add_pane.setVisible(false);
+                home_pane.setVisible(true);
+                //If any empty field
+                error1.setVisible(false);
+                //Add the new student to the student lists 
+                personTable.getItems().add(newStudent);
+                //Clear fields for the add
+                name_field.clear();
+                surname_field.clear();
+                promotion_field.setText("");
+                year_field.clear();
+            } else {
+                error1.setText("Champs contenant des caractères incorrects !");
+                error1.setVisible(true);
+            }
         } else {
+            error1.setText("Veuillez remplir tous les champs SVP");
             error1.setVisible(true);
         }
     }
     
+    /**
+     * Méthode permettant d'editer un étudiant en changeant son nom, son prénom, son année de naissance et/ou sa promotion
+     * L'édition se fait en cliquand sur le bouton "Editer" au niveau de l'accueil, sur la ligne de l'étudiant à modifier
+     * Tous les champs doivent être remplis pour pourvoir ajouter un étudiant
+     * Le nom et le prénom ne peuvent pas contenir de numéro
+     * La date de naissance ne peut pas contenir de lettres et doit contenir 4 chiffres
+     * @param event 
+     */
     @FXML
     private void editStudent(ActionEvent event) {
         Etudiant editedStudent = new Etudiant(edit_surname_field.getText(), edit_name_field.getText(), edit_promotion_field.getText(), edit_year_field.getText());
         if ((edit_name_field.getText().isEmpty() == false) && (edit_surname_field.getText().isEmpty() == false) && (edit_promotion_field.getText().isEmpty() == false) && (edit_year_field.getText().isEmpty() == false)) {
-            //Edit student
-            etudiants.set(index, editedStudent);
-            //Set home panel back            
-            title_label.setText("Accueil");
-            title_icon.setImage(new Image(getClass().getResource("baseline_home_white_48dp.png").toExternalForm()));
-            edit_pane.setVisible(false);
-            home_pane.setVisible(true);
-            //If any empty field
-            error2.setVisible(false);
-            //Clear all fields for next edit
-            edit_name_field.clear();
-            edit_surname_field.clear();
-            edit_year_field.clear();
+            if ((edit_name_field.getText().matches(".*\\d+.*") == false) && (edit_name_field.getText().matches("[a-zA-Z]+")) && (edit_surname_field.getText().matches(".*\\d+.*") == false) && (edit_surname_field.getText().matches("[a-zA-Z]+")) && ((edit_year_field.getText().matches("[0-9]+")) && (edit_year_field.getText().length() == 4))) {    
+                //Edit student
+                etudiants.set(index, editedStudent);
+                //Set home panel back            
+                title_label.setText("Accueil");
+                title_icon.setImage(new Image(getClass().getResource("baseline_home_white_48dp.png").toExternalForm()));
+                edit_pane.setVisible(false);
+                home_pane.setVisible(true);
+                error2.setVisible(false);
+            } else {
+                error2.setText("Champs contenant des caractères incorrects !");
+                error2.setVisible(true);
+            }
         } else {
+            //If any empty field
+            error2.setText("Veuillez remplir tous les champs SVP");
             error2.setVisible(true);
         }
     }
-
+    
+    /**
+     * Procédure d'initialisation qui créer notre tableau avec notre liste d'étudiants pré-remplies avec les informations de getPeople()
+     * @param url
+     * @param rb 
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         nomColonne.setCellValueFactory(new PropertyValueFactory<>("nom"));
         prenomColonne.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         anneeDeNaissanceColonne.setCellValueFactory(new PropertyValueFactory<>("anneeDeNaissance"));
         promotionColonne.setCellValueFactory(new PropertyValueFactory<>("promotion"));
-        personTable.setItems(getPeople());
+        personTable.setItems(etudiants);
         personTable.setEditable(true);
 
         //Set Edit button column
         TableColumn<Etudiant, Void> editerColonne = new TableColumn("Editer");
+        
         Callback<TableColumn<Etudiant, Void>, TableCell<Etudiant, Void>> cellFactory = (final TableColumn<Etudiant, Void> param) -> {
             final TableCell<Etudiant, Void> cell = new TableCell<Etudiant, Void>() {
-                private final Button btn = new Button("Editer");
+                private final Button btn = new Button();
                 {
                     btn.setOnAction((ActionEvent event) -> {
                         title_label.setText("Editer un étudiant");
+                        title_icon.setImage(new Image(getClass().getResource("baseline_edit_white_48dp.png").toExternalForm()));
                         Etudiant etudiant = getTableView().getItems().get(getIndex());
                         home_pane.setVisible(false);
                         add_pane.setVisible(false);
@@ -158,6 +207,8 @@ public class FXMLDocumentController implements Initializable {
                         setGraphic(null);
                     } else {
                         setGraphic(btn);
+                        setStyle("-fx-alignment : CENTER;");
+                        btn.setGraphic(new ImageView(new Image(getClass().getResource("baseline_edit_black_48dp.png").toExternalForm(), 20, 20, true, true)));
                     }
                 }
             };
@@ -165,12 +216,5 @@ public class FXMLDocumentController implements Initializable {
         };
         editerColonne.setCellFactory(cellFactory);
         personTable.getColumns().add(editerColonne);
-    }
-
-    public ObservableList<Etudiant> getPeople() {
-//        etudiants.add(new Etudiant("Frank", "Sinatra", "L3", "1999"));
-//        etudiants.add(new Etudiant("Rebecca", "Fergusson", "M1", "1999"));
-//        etudiants.add(new Etudiant("Mr.", "T", "M2", "1999"));
-        return etudiants;
     }
 }
