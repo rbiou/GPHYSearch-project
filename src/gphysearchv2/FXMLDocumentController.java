@@ -5,11 +5,18 @@
  */
 package gphysearchv2;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -17,10 +24,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import static javafx.scene.input.KeyCode.I;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  *
@@ -28,7 +38,7 @@ import javafx.scene.layout.AnchorPane;
  */
 public class FXMLDocumentController implements Initializable {
     
-    private Promotions allPromotions;
+    
     @FXML
     private Label title_label;
     @FXML
@@ -46,11 +56,10 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableView<Etudiant> personTable;
     @FXML
-    private TableColumn<Etudiant, String> prenomColonne;
+    private TableColumn<Etudiant, String> prenomColonne,nomColonne,anneeDeNaissanceColonne,promotionColonne;
+  
     @FXML
-    private TableColumn<Etudiant, String> nomColonne;  
-    @FXML
-    private Label label;    
+    private Label label,error1;    
     @FXML
     private Label prenomLabel; 
     @FXML
@@ -59,7 +68,9 @@ public class FXMLDocumentController implements Initializable {
     private Label promotionLabel;   
     @FXML
     private Label anneeDeNaissanceLabel;
+  
     
+   
     
     @FXML
     private void setSelectedPromotion(ActionEvent event) {
@@ -79,33 +90,53 @@ public class FXMLDocumentController implements Initializable {
         title_label.setText("Accueil");
         title_icon.setImage(new Image(getClass().getResource("baseline_home_white_48dp.png").toExternalForm()));
         add_pane.setVisible(false);
+        home_pane.setVisible(true);
     }
     
     @FXML
-    private void addStudent(MouseEvent event) {
-        Etudiant newStudent = new Etudiant(name_field.getText(), surname_field.getText(), promotion_field.getText(), year_field.getText());
-        allPromotions.addEtudiant(newStudent);
+    private void addStudent(ActionEvent event) {
+        
+        Etudiant newStudent = new Etudiant(surname_field.getText(), name_field.getText(), promotion_field.getText(), year_field.getText());
+        //allPromotions.addEtudiant(newStudent);
         //Set home panel back
+        if ((name_field.getText().isEmpty()==false) && (surname_field.getText().isEmpty()==false) && (promotion_field.getText().isEmpty()==false) && (year_field.getText().isEmpty()==false) ) {
+                    System.out.println("coucou");
+
+        
         title_label.setText("Accueil");
         title_icon.setImage(new Image(getClass().getResource("baseline_home_white_48dp.png").toExternalForm()));
         add_pane.setVisible(false);
         home_pane.setVisible(true);
         //System.out.println(allPromotions.size());
+        error1.setVisible(false);
+        personTable.getItems().add(newStudent);
+        }
+        else{
+            error1.setVisible(true);
+        }
     }
     
-    @Override
+
+
+      @Override
     public void initialize(URL url, ResourceBundle rb) {
-        prenomColonne.setCellValueFactory(data -> data.getValue().prenomProperty());
-        nomColonne.setCellValueFactory(data -> data.getValue().nomProperty());
-        allPromotions = new Promotions();
-        //System.out.println(allPromotions.getListeEtudiants().size());
-        personTable.setItems(allPromotions.getListeEtudiants());
+        nomColonne.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        prenomColonne.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+        anneeDeNaissanceColonne.setCellValueFactory(new PropertyValueFactory<>("anneeDeNaissance"));
+        promotionColonne.setCellValueFactory(new PropertyValueFactory<>("promotion"));
+        personTable.setItems(getPeople());
+        personTable.setEditable(true);
     }
     
-    private void showStudentsDetails(Etudiant newStudent) {
-        nomLabel.setText(newStudent.getNom());
-        prenomLabel.setText(newStudent.getPrenom());
-        promotionLabel.setText(newStudent.getPromotion());
-        anneeDeNaissanceLabel.setText(newStudent.getAnneeDeNaissance());
+    public ObservableList<Etudiant>  getPeople()
+    {
+        ObservableList<Etudiant> etudiants = FXCollections.observableArrayList();
+        etudiants.add(new Etudiant("Frank","Sinatra","L3", "1999"));
+        etudiants.add(new Etudiant("Rebecca","Fergusson","M1", "1999"));
+        etudiants.add(new Etudiant("Mr.","T","M2", "1999"));
+       
+        
+        return etudiants;
     }
 }
+
